@@ -26,10 +26,9 @@ class Person:
 
 
 def scan():
-    # try opening database with persons
-    # try:
-    #	persons = pickle.load( open(dateFile, 'rb') )
-    # except FileNotFoundError:
+    # wait for input of date
+    #print('Test1')
+
 
     # TODO: check date and create file
     date = 'Test.19.04.2021'
