@@ -5,6 +5,12 @@ import imutils
 from imutils.video import VideoStream
 import time
 import pickle
+import threading
+from tkinter import *
+import grafikinterface
+
+#global gui var
+gui = None
 
 class Person:
 	def __init__(self, vorname, nachname, telefonnr, strasse, hausnr, plz, ort, email):
@@ -18,6 +24,28 @@ class Person:
 		self.email = email
 	def __repr__(self):
 		return self.vorname + ' ' + self.nachname
+
+def gui_function():
+	global gui
+	main = Tk()
+	gui = grafikinterface.mainGui(main)
+	#gui.write("test")
+	#gui.write2("test2")
+	main.mainloop()
+
+#start gui thread
+guiThread = threading.Thread(target=gui_function, daemon=True)
+guiThread.start()
+
+#try opening database with persons
+#try:
+#	persons = pickle.load( open(dateFile, 'rb') )
+#except FileNotFoundError:
+
+#TODO: check date and create file
+date = 'Test.19.04.2021'
+dateReplaced = date.replace('.', '_')
+dateFile = dateReplaced + '.p'
 
 #initialize video stream and wait
 vs = VideoStream( usePiCamera = True ).start()
@@ -40,9 +68,6 @@ try:
 				if checkString != "BAU":
 					print ('Wrong code')
 					break
-				date = dataArray[1]
-				dateReplaced = date.replace('.', '_')
-				dateFile = dateReplaced + '.p'
 				#get persons list from files
 				try:
 					#open file in read-binary-mode
@@ -50,10 +75,10 @@ try:
 				except FileNotFoundError:
 					#create empty list if no saved file is found
 					persons = []
-				new_person = Person(dataArray[2], dataArray[3], dataArray[4], dataArray[5], dataArray[6], dataArray[7], dataArray[8], dataArray[9])
+				new_person = Person(dataArray[1], dataArray[2], dataArray[3], dataArray[4], dataArray[5], dataArray[6], dataArray[7], dataArray[8])
 				persons.append(new_person)
-				#print(persons)
-				print ('Wait...')
+				gui.write(persons)
+				#print ('Wait...')
 				#serialize persons list (open file in write-binary-mode)
 				pickle.dump( persons, open( dateFile, 'wb' ) )
 				print (persons)
