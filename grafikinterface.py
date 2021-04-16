@@ -57,7 +57,7 @@ class mainGui:
 		#    self.output.see("end")
 		self.output.delete(0, END)
 		for person in persons:
-			self.output.insert(END, str(person.__repr__() + "\n"))
+			self.output.insert(END, str(person.__repr__()))
 			self.output.see("end")
 
 	#def write2(self, txt):
