@@ -9,9 +9,6 @@ import threading
 from tkinter import *
 import grafikinterface
 
-# global gui var
-gui = None
-
 
 class Person:
     def __init__(self, vorname, nachname, telefonnr, strasse, hausnr, plz, ort, email):
