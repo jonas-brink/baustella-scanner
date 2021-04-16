@@ -12,7 +12,7 @@ import re
 from person import Person
 
 
-def scan(date):
+def scan(gui, date):
     dateReplaced = date.replace('.', '_')
     dateFile = dateReplaced + '.p'
 
@@ -23,6 +23,7 @@ def scan(date):
     except FileNotFoundError:
         # create empty list if no saved file is found
         persons = []
+    gui.write(persons)
 
     # initialize video stream and wait
     vs = VideoStream(usePiCamera=True).start()
@@ -67,17 +68,17 @@ if __name__ == "__main__":
             "^[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]$", inputDate)
         if matchObject:
             print('Accepted.')
-            print(date)
+            print(inputDate)
             break
 
     # create gui
     global gui
     main = Tk()
-    gui = grafikinterface.mainGui(main)
+    mainGUI = grafikinterface.mainGui(main)
     # start scanner thread
     try:
         scanThread = threading.Thread(
-            target=scan, args=(inputDate), daemon=True)
+            target=scan, args=(mainGUI, inputDate), daemon=True)
         scanThread.start()
         main.mainloop()
     except KeyboardInterrupt:
