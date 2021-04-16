@@ -49,12 +49,15 @@ class mainGui:
         self.output2.pack(side=LEFT)
         self.scrollbar2.config(command=self.output2.yview)
 
-    def write(self, txt):
-        if txt == "BLANK":
-            self.output.insert(END, "\n")
-        else:
-            self.output.insert(END, str(txt + "\n"))
-            self.output.see("end")
+    def write(self, persons):
+        #if txt == "BLANK":
+        #    self.output.insert(END, "\n")
+        #else:
+        #    self.output.insert(END, str(txt + "\n"))
+        #    self.output.see("end")
+	for person in persons:
+		self.output.insert(END, str(person.__repr__ + "\n"))
+		self.output.see("end")
 
     def write2(self, txt):
         if txt == "BLANK":
