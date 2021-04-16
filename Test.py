@@ -10,8 +10,9 @@ def thread_function():
     main.mainloop()
 
 if __name__ == "__main__":
-    x = threading.Thread(target=thread_function())
+    x = threading.Thread(target=thread_function)
     x.start()
+    print ('TEST')
 
 
 
