@@ -8,7 +8,7 @@ import pickle
 import threading
 from tkinter import *
 import grafikinterface
-
+import re
 
 class Person:
     def __init__(self, vorname, nachname, telefonnr, strasse, hausnr, plz, ort, email):
@@ -27,7 +27,12 @@ class Person:
 
 def scan():
     # wait for input of date
-    #print('Test1')
+    while True:
+        inputDate = input('Date: ')
+        matchObject = re.match("^[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]$", inputDate)
+        if matchObject:
+            print('Accepted.')
+            break
 
 
     # TODO: check date and create file
