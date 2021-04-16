@@ -78,11 +78,10 @@ if __name__ == "__main__":
     global date
     while True:
         inputDate = input('Date: ')
-        matchObject = re.match(
-            "^[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]$", inputDate)
+        matchObject = re.match("^[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]$", inputDate)
         if matchObject:
             print('Accepted.')
-            date = matchObject.match
+            date = inputDate
             print(date)
             break
 
@@ -97,3 +96,4 @@ if __name__ == "__main__":
         main.mainloop()
     except KeyboardInterrupt:
         print("Leaving...")
+
