@@ -10,10 +10,46 @@ from tkinter import *
 import grafikinterface
 import re
 from person import Person
+# get access to LEDs connected to RPi
+from gpiozero import LED
+# get keypad class from keypad.py
+from keypad import keypad
+import RPi.GPIO as GPIO
+
+GPIO.setwarnings(False)
+
+def inputDigit(kp):
+    digit = None
+    while digit == None:
+        digit = kp.getKey()
+    time.sleep(0.4)
+    return str(digit)
 
 
-def scan(gui, date):
-    dateReplaced = date.replace('.', '_')
+def dateInput():
+    kp = keypad(columnCount = 4)
+    print("Bitte das Datum eingeben (TT*MM*JJJJ): ")
+    # input of day
+    day1 = inputDigit(kp)
+    day2 = inputDigit(kp)
+    # dot 1
+    dot1 = inputDigit(kp)
+    # input of month
+    month1 = inputDigit(kp)
+    month2 = inputDigit(kp)
+    # dot 2
+    dot2 = inputDigit(kp)
+    # input of year
+    year1 = inputDigit(kp)
+    year2 = inputDigit(kp)
+    year3 = inputDigit(kp)
+    year4 = inputDigit(kp)
+    kp.exit()
+    return day1 + day2 + dot1 + month1 + month2 + dot2 + year1 + year2 + year3 + year4
+
+
+def scan(gui, date, pin):
+    dateReplaced = date.replace('*', '_')
     dateFile = dateReplaced + '.p'
 
     # get persons list from files
@@ -24,6 +60,9 @@ def scan(gui, date):
         # create empty list if no saved file is found
         persons = []
     gui.write(persons)
+
+    # initialize LED
+    led = LED(pin)
 
     # initialize video stream and wait
     vs = VideoStream(usePiCamera=True).start()
@@ -55,26 +94,30 @@ def scan(gui, date):
                     break
                 persons.append(new_person)
                 gui.write(persons)
+                led.on()
                 print('Wait...')
                 # serialize persons list (open file in write-binary-mode)
                 pickle.dump(persons, open(dateFile, 'wb'))
                 print(persons)
-                time.sleep(3.0)
+                time.sleep(2.0)
+                led.off()
                 print('Scan:')
             except IndexError:
                 print('Malicious QR-Code')
 
 
 if __name__ == "__main__":
+    #disable GPIO warnings
+    #GPIO.setwarnings(False)
+
     # wait for input of date
-    while True:
-        inputDate = input('Date: ')
-        matchObject = re.match(
-            "^[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]$", inputDate)
-        if matchObject:
-            print('Accepted.')
-            print(inputDate)
-            break
+    matchObject = None
+    while not matchObject:
+        date = dateInput()
+        print(date)
+        matchObject = re.match("^[0-9][0-9]\*[0-9][0-9]\*[0-9][0-9][0-9][0-9]$", date)
+        if not matchObject:
+            print('Falsches Datum!')
 
     # create gui
     global gui
@@ -83,7 +126,7 @@ if __name__ == "__main__":
     # start scanner thread
     try:
         scanThread = threading.Thread(
-            target=scan, args=(mainGUI, inputDate), daemon=True)
+            target=scan, args=(mainGUI, date, 17), daemon=True)
         scanThread.start()
         main.mainloop()
     except KeyboardInterrupt:

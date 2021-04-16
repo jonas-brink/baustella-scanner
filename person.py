@@ -1,13 +1,13 @@
 class Person:
-    def __init__(self, vorname, nachname, telefonnr, strasse, hausnr, plz, ort, email):
+    def __init__(self, vorname, nachname, gebdatum, telefonnr, strasse, hausnr, plz, ort):
         self.vorname = vorname
         self.nachname = nachname
+        self.gebdatum = gebdatum
         self.telefonnr = telefonnr
         self.strasse = strasse
         self.hausnr = hausnr
         self.plz = plz
         self.ort = ort
-        self.email = email
 
     def __repr__(self):
         return self.vorname + ' ' + self.nachname
