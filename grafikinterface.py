@@ -4,7 +4,7 @@ class mainGui:
 		self.pace = 1.0
 		self.height = 1
 		self.master = master
-		master.geometry("1500x700")
+		master.geometry("520x375+600+300")
 		master.config(bg="white")
 		master.title("Main Interface")
 		master.resizable(True, True)
@@ -25,17 +25,17 @@ class mainGui:
 		self.frameTerminal.configure(background='black')
 
 		# frame for terminal2
-		self.frameTerminal2 = Frame(self.frameBot)
-		self.frameTerminal2.grid(row=0, column=0)
-		self.frameTerminal2.configure(background='black')
+		#self.frameTerminal2 = Frame(self.frameBot)
+		#self.frameTerminal2.grid(row=0, column=0)
+		#self.frameTerminal2.configure(background='black')
 
 		# create scrollbar
 		self.scrollbar = Scrollbar(self.frameTerminal)
 		self.scrollbar.pack(side=RIGHT, fill="y")
 
 		# create scrollbar2
-		self.scrollbar2 = Scrollbar(self.frameTerminal2)
-		self.scrollbar2.pack(side=RIGHT, fill="y")
+		#self.scrollbar2 = Scrollbar(self.frameTerminal2)
+		#self.scrollbar2.pack(side=RIGHT, fill="y")
 
 		# create output
 		self.output = Listbox(self.frameTerminal, yscrollcommand=self.scrollbar.set, width=50, height=15,
@@ -44,10 +44,10 @@ class mainGui:
 		self.scrollbar.config(command=self.output.yview)
 
 		# create output
-		self.output2 = Listbox(self.frameTerminal2, yscrollcommand=self.scrollbar2.set, width=50, height=15,
-                               background='black', fg='white')
-		self.output2.pack(side=LEFT)
-		self.scrollbar2.config(command=self.output2.yview)
+		#self.output2 = Listbox(self.frameTerminal2, yscrollcommand=self.scrollbar2.set, width=50, height=15,
+                #               background='black', fg='white')
+		#self.output2.pack(side=LEFT)
+		#self.scrollbar2.config(command=self.output2.yview)
 
 	def write(self, persons):
 		#if txt == "BLANK":
@@ -60,9 +60,9 @@ class mainGui:
 			self.output.insert(END, str(person.__repr__() + "\n"))
 			self.output.see("end")
 
-	def write2(self, txt):
-		if txt == "BLANK":
-			self.output2.insert(END, "\n")
-		else:
-			self.output2.insert(END, str(txt + "\n"))
-			self.output2.see("end")
+	#def write2(self, txt):
+	#	if txt == "BLANK":
+	#		self.output2.insert(END, "\n")
+	#	else:
+	#		self.output2.insert(END, str(txt + "\n"))
+	#		self.output2.see("end")
