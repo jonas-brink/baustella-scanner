@@ -45,9 +45,14 @@ def scan(gui, date):
                 if checkString != "BAU":
                     print('Wrong code')
                     break
-
                 new_person = Person(dataArray[1], dataArray[2], dataArray[3], dataArray[4],
                                     dataArray[5], dataArray[6], dataArray[7], dataArray[8])
+                # check if new_person is already contained in persons list
+                if any(person for person in persons if (person.__repr__() == new_person.__repr__())):
+                    print('Person already registered')
+                    # wait 2 seconds
+                    time.sleep(2.0)
+                    break
                 persons.append(new_person)
                 gui.write(persons)
                 print('Wait...')
