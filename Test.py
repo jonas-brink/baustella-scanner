@@ -7,6 +7,7 @@ from threading import Thread
 
 if __name__ == "__main__":
     Jan = person.Person("Jan-Luca", "Nettingsmeier", "03.08.99", "057326302", "Auf der Bülte", "59", "32584", "Löhne")
+    Jan2 = person.Person("Jan-Luca2", "Nettingsmeier", "03.08.99", "057326302", "Auf der Bülte", "59", "32584", "Löhne")
 
 
     main = Tk()
@@ -15,6 +16,7 @@ if __name__ == "__main__":
     mainGUI.anzahlPersonenErhöhen()
     mainGUI.anzahlPersonenErhöhen()
     mainGUI.personGescannt(Jan)
-    mainGUI.write([Jan])
+    mainGUI.write([Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan,Jan])
+
 
     main.mainloop()

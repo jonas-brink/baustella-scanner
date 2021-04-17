@@ -88,6 +88,10 @@ class mainGui:
 		self.output = Listbox(self.frameTerminal, yscrollcommand=self.scrollbar.set, width=50, height=30, background='black', fg='white', font=('Helvetica', 14))
 		self.output.grid(row=0, column=0, sticky='NSEW')
 		self.scrollbar.config(command=self.output.yview)
+		self.output.bind("<q>", lambda event: self.output.see(0))
+		self.output.bind("<w>", lambda event: self.output.yview_scroll(-1, "units"))
+		self.output.bind("<s>", lambda event: self.output.yview_scroll(1, "units"))
+		self.output.focus_set()
 
 		# create output2
 		#if mode==2:
