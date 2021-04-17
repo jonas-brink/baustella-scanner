@@ -20,6 +20,7 @@ from tabulate import tabulate
 import pdfkit
 import startGrafik
 from urllib.parse import unquote
+import os
 
 
 ROWS = 4
@@ -90,7 +91,7 @@ def scan(gui, dateFile, pin):
             decodedCode = unquote(barcode.data.decode())
             print("decoded:")
             print(decodedCode)
-            dataArray = decodedCode.replace(' ', '').split('}')
+            dataArray = decodedCode.split('}')
             try:
                 checkString = dataArray[0]
                 if checkString != "BAU":
@@ -108,8 +109,8 @@ def scan(gui, dateFile, pin):
                     break
                 persons.append(new_person)
                 led.on()
-                gui.personGescannt(new_person)
                 gui.write(persons)
+                gui.personGescannt(new_person)
                 # serialize persons list (open file in write-binary-mode)
                 pickle.dump(persons, open(dateFile, 'wb'))
                 print(persons)
@@ -121,6 +122,11 @@ def scan(gui, dateFile, pin):
 
 
 if __name__ == "__main__":
+    #if os.environ.get('DISPLAY', '') == '':
+    #    print('no display found. Using :0.0')
+    #    os.environ.__setitem__('DISPLAY', ':0.0')
+
+
     start = Tk()
     startGui = startGrafik.startGui(start)
     startGui.auswahlTreffen()
