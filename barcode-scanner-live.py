@@ -1,3 +1,4 @@
+#export LC_ALL=de_DE.UTF-8
 # import packages
 import cv2
 from pyzbar import pyzbar
@@ -17,6 +18,8 @@ import keypad as Keypad
 import RPi.GPIO as GPIO
 from tabulate import tabulate
 import pdfkit
+import startGrafik
+from urllib.parse import unquote
 
 
 ROWS = 4
@@ -36,7 +39,9 @@ def inputDigit(kp):
     return str(digit)
 
 
-def dateInput(kp):
+def dateInput(kp, startGui, start):
+    startGui.datumEingeben()
+    start.update()
     print("Bitte das Datum eingeben (TT*MM*JJJJ): ")
     # input of day
     day1 = inputDigit(kp)
@@ -82,7 +87,9 @@ def scan(gui, dateFile, pin):
         barcodes = pyzbar.decode(frame)
         for barcode in barcodes:
             # decode data input
-            decodedCode = barcode.data.decode()
+            decodedCode = unquote(barcode.data.decode())
+            print("decoded:")
+            print(decodedCode)
             dataArray = decodedCode.replace(' ', '').split('}')
             try:
                 checkString = dataArray[0]
@@ -91,6 +98,8 @@ def scan(gui, dateFile, pin):
                     break
                 new_person = Person(dataArray[1], dataArray[2], dataArray[3], dataArray[4],
                                     dataArray[5], dataArray[6], dataArray[7], dataArray[8])
+                print("new_person")
+                print(dataArray[8])
                 # check if new_person is already contained in persons list
                 if any(person for person in persons if (person.__repr__() == new_person.__repr__())):
                     print('Person already registered')
@@ -99,7 +108,6 @@ def scan(gui, dateFile, pin):
                     break
                 persons.append(new_person)
                 led.on()
-                gui.anzahlPersonenErhöhen()
                 gui.personGescannt(new_person)
                 gui.write(persons)
                 # serialize persons list (open file in write-binary-mode)
@@ -113,6 +121,10 @@ def scan(gui, dateFile, pin):
 
 
 if __name__ == "__main__":
+    start = Tk()
+    startGui = startGrafik.startGui(start)
+    startGui.auswahlTreffen()
+    start.update()
 
     # wait for input of mode (A: scan, D: print)
     kp = Keypad.Keypad(keys, rowsPins, colsPins, ROWS, COLS)
@@ -127,7 +139,7 @@ if __name__ == "__main__":
     # wait for input of date
     matchObject = None
     while not matchObject:
-        date = dateInput(kp)
+        date = dateInput(kp, startGui, start)
         print(date)
         matchObject = re.match(
             "^[0-9][0-9]\*[0-9][0-9]\*[0-9][0-9][0-9][0-9]$", date)
@@ -138,6 +150,8 @@ if __name__ == "__main__":
 
     if mode == 'A':
         try:
+            # close input window
+            start.destroy()
             # create gui
             global gui
             main = Tk()
@@ -166,5 +180,6 @@ if __name__ == "__main__":
         # css
         css = "<style>table {border-spacing: 15px 10px;border-collapse: separate;}th {font-size: 20px;line-height: 1.5;}tr {background-color: antiquewhite;}</style>"
         tableHTML = tableHTML + css
+        #print(tableHTML)
         # write to pdf
         pdfkit.from_string(tableHTML, dateReplaced + '.pdf')
