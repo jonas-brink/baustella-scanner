@@ -13,6 +13,7 @@ if __name__ == "__main__":
 
     mainGUI = grafikinterface_new.mainGui(main, 2)
     mainGUI.anzahlPersonenErhöhen()
+    mainGUI.anzahlPersonenErhöhen()
     mainGUI.personGescannt(Jan)
     mainGUI.write([Jan])
 
