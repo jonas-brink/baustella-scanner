@@ -13,7 +13,7 @@ from person import Person
 # get access to LEDs connected to RPi
 from gpiozero import LED
 # get keypad class from keypad.py
-from keypad2 import Keypad
+import keypad as Keypad
 import RPi.GPIO as GPIO
 
 
@@ -23,8 +23,8 @@ keys = ['1', '2', '3', 'A',
 	'4', '5', '6', 'B',
 	'7', '8', '9', 'C',
 	'*', '0', '#', 'D']
-rowsPins = [26, 24, 23, 22]
-colsPins = [21, 19, 10, 12]
+rowsPins = [7, 8, 11, 25]
+colsPins = [9, 10, 15, 18]
 
 
 def inputDigit(kp):
@@ -34,9 +34,7 @@ def inputDigit(kp):
     return str(digit)
 
 
-def dateInput():
-	kp = Keypad.Keypad(keys, rowsPins, colsPins, ROWS, COLS)
-	kp.setDebounceTime(50)
+def dateInput(kp):
     print("Bitte das Datum eingeben (TT*MM*JJJJ): ")
     # input of day
     day1 = inputDigit(kp)
@@ -53,7 +51,6 @@ def dateInput():
     year2 = inputDigit(kp)
     year3 = inputDigit(kp)
     year4 = inputDigit(kp)
-    kp.exit()
     return day1 + day2 + dot1 + month1 + month2 + dot2 + year1 + year2 + year3 + year4
 
 
@@ -117,10 +114,20 @@ def scan(gui, date, pin):
 
 if __name__ == "__main__":
     try:
+        # wait for input of mode (A: scan, D: print)
+        kp = Keypad.Keypad(keys, rowsPins, colsPins, ROWS, COLS)
+        kp.setDebounceTime(50)
+        mode = None
+        while mode != 'A' and mode != 'B':
+            print ('Wähle Modus (A: Scannen, D: Drucken): ')
+            mode = inputDigit(kp)
+            print(mode)
+        print ('Mode: ' + mode)
+
         # wait for input of date
         matchObject = None
         while not matchObject:
-            date = dateInput()
+            date = dateInput(kp)
             print(date)
             matchObject = re.match(
                 "^[0-9][0-9]\*[0-9][0-9]\*[0-9][0-9][0-9][0-9]$", date)
@@ -140,4 +147,4 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             print("Leaving...")
     finally:
-        GPIO.cleanup()
+        GPIO.cleanup([7, 8, 9, 10, 11, 15, 18, 25])
