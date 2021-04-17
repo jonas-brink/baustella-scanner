@@ -117,7 +117,7 @@ if __name__ == "__main__":
     kp = Keypad.Keypad(keys, rowsPins, colsPins, ROWS, COLS)
     kp.setDebounceTime(50)
     mode = None
-    while mode != 'A' and mode != 'B':
+    while mode != 'A' and mode != 'D':
         print('Wähle Modus (A: Scannen, D: Drucken): ')
         mode = inputDigit(kp)
         print(mode)
@@ -151,16 +151,19 @@ if __name__ == "__main__":
                 print("Leaving...")
         finally:
             GPIO.cleanup([7, 8, 9, 10, 11, 15, 18, 25])
-    elif mode == 'B':
+    elif mode == 'D':
         persons = pickle.load(open(dateFile, 'rb'))
         table = []
         for person in persons:
             table.append(person.getList())
         headers = ["Vorname", "Nachname", "GebDatum",
                    "TelefonNr", "Straße", "HausNr", "PLZ", "Ort"]
-        tableHTML = str(tabulate(table, headers, tbalefmt="html"))
+        tableHTML = tabulate(table, headers, tablefmt="html")
+        # head
+        head = "<head><meta charset='utf-8'/></head>"
+        tableHTML = head + tableHTML
         # css
         css = "<style>table {border-spacing: 15px 10px;border-collapse: separate;}th {font-size: 20px;line-height: 1.5;}tr {background-color: antiquewhite;}</style>"
         tableHTML = tableHTML + css
         # write to pdf
-        pdfkit.from_string(tableHTML, "out.pdf")
+        pdfkit.from_string(tableHTML, dateReplaced + '.pdf')
