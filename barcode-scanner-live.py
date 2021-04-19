@@ -42,42 +42,39 @@ def scan():
     print('Start...')
 
     # loop over frames
-    try:
-        while True:
-            frame = vs.read()
-            # resize image for better performance
-            #frame = imutils.resize(frame, width=1000)
-            barcodes = pyzbar.decode(frame)
-            for barcode in barcodes:
-                # decode data input
-                decodedCode = barcode.data.decode()
-                dataArray = decodedCode.replace(' ', '').split('}')
+    while True:
+        frame = vs.read()
+        # resize image for better performance
+        #frame = imutils.resize(frame, width=1000)
+        barcodes = pyzbar.decode(frame)
+        for barcode in barcodes:
+            # decode data input
+            decodedCode = barcode.data.decode()
+            dataArray = decodedCode.replace(' ', '').split('}')
+            try:
+                checkString = dataArray[0]
+                if checkString != "BAU":
+                    print('Wrong code')
+                    break
+                # get persons list from files
                 try:
-                    checkString = dataArray[0]
-                    if checkString != "BAU":
-                        print('Wrong code')
-                        break
-                    # get persons list from files
-                    try:
-                        # open file in read-binary-mode
-                        persons = pickle.load(open(dateFile, 'rb'))
-                    except FileNotFoundError:
-                        # create empty list if no saved file is found
-                        persons = []
-                    new_person = Person(dataArray[1], dataArray[2], dataArray[3], dataArray[4],
-                                        dataArray[5], dataArray[6], dataArray[7], dataArray[8])
-                    persons.append(new_person)
-                    gui.write(persons)
-                    #print ('Wait...')
-                    # serialize persons list (open file in write-binary-mode)
-                    pickle.dump(persons, open(dateFile, 'wb'))
-                    print(persons)
-                    time.sleep(3.0)
-                    print('Scan:')
-                except IndexError:
-                    print('Malicious QR-Code')
-    except KeyboardInterrupt:
-        print('Leaving...')
+                    # open file in read-binary-mode
+                    persons = pickle.load(open(dateFile, 'rb'))
+                except FileNotFoundError:
+                    # create empty list if no saved file is found
+                    persons = []
+                new_person = Person(dataArray[1], dataArray[2], dataArray[3], dataArray[4],
+                                    dataArray[5], dataArray[6], dataArray[7], dataArray[8])
+                persons.append(new_person)
+                gui.write(persons)
+                #print ('Wait...')
+                # serialize persons list (open file in write-binary-mode)
+                pickle.dump(persons, open(dateFile, 'wb'))
+                print(persons)
+                time.sleep(3.0)
+                print('Scan:')
+            except IndexError:
+                print('Malicious QR-Code')
 
 
 if __name__ == "__main__":
@@ -85,6 +82,9 @@ if __name__ == "__main__":
     main = Tk()
     gui = grafikinterface.mainGui(main)
     # start scanner thread
-    scanThread = threading.Thread(target=scan, daemon=True)
-    scanThread.start()
-    main.mainloop()
+    try:
+        scanThread = threading.Thread(target=scan, daemon=True)
+        scanThread.start()
+        main.mainloop()
+    except KeyboardInterrupt:
+        print("Leaving...")
