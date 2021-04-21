@@ -10,6 +10,7 @@ from tkinter import *
 import grafikinterface
 import re
 
+
 class Person:
     def __init__(self, vorname, nachname, telefonnr, strasse, hausnr, plz, ort, email):
         self.vorname = vorname
@@ -26,17 +27,8 @@ class Person:
 
 
 def scan():
-    # wait for input of date
-    while True:
-        inputDate = input('Date: ')
-        matchObject = re.match("^[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]$", inputDate)
-        if matchObject:
-            print('Accepted.')
-            break
-
-
     # TODO: check date and create file
-    date = 'Test.19.04.2021'
+    global date
     dateReplaced = date.replace('.', '_')
     dateFile = dateReplaced + '.p'
 
@@ -82,6 +74,19 @@ def scan():
 
 
 if __name__ == "__main__":
+    # wait for input of date
+    global date
+    while True:
+        inputDate = input('Date: ')
+        matchObject = re.match(
+            "^[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]$", inputDate)
+        if matchObject:
+            print('Accepted.')
+            date = matchObject.match
+            print(date)
+            break
+
+    # create gui
     global gui
     main = Tk()
     gui = grafikinterface.mainGui(main)
