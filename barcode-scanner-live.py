@@ -1,4 +1,4 @@
-#import packages
+# import packages
 import cv2
 from pyzbar import pyzbar
 import imutils
@@ -13,21 +13,30 @@ from person import Person
 # get access to LEDs connected to RPi
 from gpiozero import LED
 # get keypad class from keypad.py
-from keypad import keypad
+from keypad2 import Keypad
 import RPi.GPIO as GPIO
 
-GPIO.setwarnings(False)
+
+ROWS = 4
+COLS = 4
+keys = ['1', '2', '3', 'A',
+	'4', '5', '6', 'B',
+	'7', '8', '9', 'C',
+	'*', '0', '#', 'D']
+rowsPins = [26, 24, 23, 22]
+colsPins = [21, 19, 10, 12]
+
 
 def inputDigit(kp):
     digit = None
-    while digit == None:
+    while digit == None or digit == kp.NULL:
         digit = kp.getKey()
-    time.sleep(0.4)
     return str(digit)
 
 
 def dateInput():
-    kp = keypad(columnCount = 4)
+	kp = Keypad.Keypad(keys, rowsPins, colsPins, ROWS, COLS)
+	kp.setDebounceTime(50)
     print("Bitte das Datum eingeben (TT*MM*JJJJ): ")
     # input of day
     day1 = inputDigit(kp)
@@ -73,7 +82,7 @@ def scan(gui, date, pin):
     while True:
         frame = vs.read()
         # resize image for better performance
-        #frame = imutils.resize(frame, width=1000)
+        # frame = imutils.resize(frame, width=1000)
         barcodes = pyzbar.decode(frame)
         for barcode in barcodes:
             # decode data input
@@ -107,27 +116,28 @@ def scan(gui, date, pin):
 
 
 if __name__ == "__main__":
-    #disable GPIO warnings
-    #GPIO.setwarnings(False)
-
-    # wait for input of date
-    matchObject = None
-    while not matchObject:
-        date = dateInput()
-        print(date)
-        matchObject = re.match("^[0-9][0-9]\*[0-9][0-9]\*[0-9][0-9][0-9][0-9]$", date)
-        if not matchObject:
-            print('Falsches Datum!')
-
-    # create gui
-    global gui
-    main = Tk()
-    mainGUI = grafikinterface.mainGui(main)
-    # start scanner thread
     try:
-        scanThread = threading.Thread(
-            target=scan, args=(mainGUI, date, 17), daemon=True)
-        scanThread.start()
-        main.mainloop()
-    except KeyboardInterrupt:
-        print("Leaving...")
+        # wait for input of date
+        matchObject = None
+        while not matchObject:
+            date = dateInput()
+            print(date)
+            matchObject = re.match(
+                "^[0-9][0-9]\*[0-9][0-9]\*[0-9][0-9][0-9][0-9]$", date)
+            if not matchObject:
+                print('Falsches Datum!')
+
+        # create gui
+        global gui
+        main = Tk()
+        mainGUI = grafikinterface.mainGui(main)
+        # start scanner thread
+        try:
+            scanThread = threading.Thread(
+                target=scan, args=(mainGUI, date, 17), daemon=True)
+            scanThread.start()
+            main.mainloop()
+        except KeyboardInterrupt:
+            print("Leaving...")
+    finally:
+        GPIO.cleanup()
