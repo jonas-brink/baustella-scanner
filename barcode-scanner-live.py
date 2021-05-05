@@ -15,14 +15,16 @@ from gpiozero import LED
 # get keypad class from keypad.py
 import keypad as Keypad
 import RPi.GPIO as GPIO
+from tabulate import tabulate
+import pdfkit
 
 
 ROWS = 4
 COLS = 4
 keys = ['1', '2', '3', 'A',
-	'4', '5', '6', 'B',
-	'7', '8', '9', 'C',
-	'*', '0', '#', 'D']
+        '4', '5', '6', 'B',
+        '7', '8', '9', 'C',
+        '*', '0', '#', 'D']
 rowsPins = [7, 8, 11, 25]
 colsPins = [9, 10, 15, 18]
 
@@ -54,10 +56,7 @@ def dateInput(kp):
     return day1 + day2 + dot1 + month1 + month2 + dot2 + year1 + year2 + year3 + year4
 
 
-def scan(gui, date, pin):
-    dateReplaced = date.replace('*', '_')
-    dateFile = dateReplaced + '.p'
-
+def scan(gui, dateFile, pin):
     # get persons list from files
     try:
         # open file in read-binary-mode
@@ -113,38 +112,55 @@ def scan(gui, date, pin):
 
 
 if __name__ == "__main__":
-    try:
-        # wait for input of mode (A: scan, D: print)
-        kp = Keypad.Keypad(keys, rowsPins, colsPins, ROWS, COLS)
-        kp.setDebounceTime(50)
-        mode = None
-        while mode != 'A' and mode != 'B':
-            print ('Wähle Modus (A: Scannen, D: Drucken): ')
-            mode = inputDigit(kp)
-            print(mode)
-        print ('Mode: ' + mode)
 
-        # wait for input of date
-        matchObject = None
-        while not matchObject:
-            date = dateInput(kp)
-            print(date)
-            matchObject = re.match(
-                "^[0-9][0-9]\*[0-9][0-9]\*[0-9][0-9][0-9][0-9]$", date)
-            if not matchObject:
-                print('Falsches Datum!')
+    # wait for input of mode (A: scan, D: print)
+    kp = Keypad.Keypad(keys, rowsPins, colsPins, ROWS, COLS)
+    kp.setDebounceTime(50)
+    mode = None
+    while mode != 'A' and mode != 'B':
+        print('Wähle Modus (A: Scannen, D: Drucken): ')
+        mode = inputDigit(kp)
+        print(mode)
+    print('Mode: ' + mode)
 
-        # create gui
-        global gui
-        main = Tk()
-        mainGUI = grafikinterface.mainGui(main)
-        # start scanner thread
+    # wait for input of date
+    matchObject = None
+    while not matchObject:
+        date = dateInput(kp)
+        print(date)
+        matchObject = re.match(
+            "^[0-9][0-9]\*[0-9][0-9]\*[0-9][0-9][0-9][0-9]$", date)
+        if not matchObject:
+            print('Falsches Datum!')
+    dateReplaced = date.replace('*', '_')
+    dateFile = dateReplaced + '.p'
+
+    if mode == 'A':
         try:
-            scanThread = threading.Thread(
-                target=scan, args=(mainGUI, date, 17), daemon=True)
-            scanThread.start()
-            main.mainloop()
-        except KeyboardInterrupt:
-            print("Leaving...")
-    finally:
-        GPIO.cleanup([7, 8, 9, 10, 11, 15, 18, 25])
+            # create gui
+            global gui
+            main = Tk()
+            mainGUI = grafikinterface.mainGui(main)
+            # start scanner thread
+            try:
+                scanThread = threading.Thread(
+                    target=scan, args=(mainGUI, dateFile, 17), daemon=True)
+                scanThread.start()
+                main.mainloop()
+            except KeyboardInterrupt:
+                print("Leaving...")
+        finally:
+            GPIO.cleanup([7, 8, 9, 10, 11, 15, 18, 25])
+    elif mode == 'B':
+        persons = pickle.load(open(dateFile, 'rb'))
+        table = []
+        for person in persons:
+            table.append(person.getList())
+        headers = ["Vorname", "Nachname", "GebDatum",
+                   "TelefonNr", "Straße", "HausNr", "PLZ", "Ort"]
+        tableHTML = str(tabulate(table, headers, tbalefmt="html"))
+        # css
+        css = "<style>table {border-spacing: 15px 10px;border-collapse: separate;}th {font-size: 20px;line-height: 1.5;}tr {background-color: antiquewhite;}</style>"
+        tableHTML = tableHTML + css
+        # write to pdf
+        pdfkit.from_string(tableHTML, "out.pdf")
