@@ -24,7 +24,7 @@ class mainGui:
 		#building frame grid
 		self.frameTop = Frame(master, padx=50, pady=70, bg='orange')
 		self.frameTop.grid(row=0, column=0)
-		self.frameTopRight = Frame(master, padx=50, pady=50, bg='red')
+		self.frameTopRight = Frame(master, padx=50, pady=70, bg='red')
 		self.frameTopRight.grid(row=0, column=1)
 		self.frameBot = Frame(master, padx=50, pady=50, bg='gray')
 		self.frameBot.grid(row=1, column=0)
@@ -115,16 +115,17 @@ class mainGui:
 
 	def personGescannt(self, person):
 		self.master.update()
-		time.sleep(3)
+		#time.sleep(3)
 
+		self.frameTopRight.config(bg='green')
 		self.personAnzeigen(person)
 		self.anzahlPersonenErhöhen()
-		self.bausetllaLabel211 = Label(self.frameTop, text="Warten : 5", bg="red", fg="white", font=("Courier", 22)).grid(row=1, column=0, columnspan=2, padx='5', pady='5', sticky='ew')
-		self.master.update()
-		time.sleep(1)
-		self.bausetllaLabel214 = Label(self.frameTop, text="Warten : 4", bg="red", fg="white", font=("Courier", 22)).grid(row=1, column=0, columnspan=2, padx='5', pady='5', sticky='ew')
-		self.master.update()
-		time.sleep(1)
+		#self.bausetllaLabel211 = Label(self.frameTop, text="Warten : 5", bg="red", fg="white", font=("Courier", 22)).grid(row=1, column=0, columnspan=2, padx='5', pady='5', sticky='ew')
+		#self.master.update()
+		#time.sleep(1)
+		#self.bausetllaLabel214 = Label(self.frameTop, text="Warten : 4", bg="red", fg="white", font=("Courier", 22)).grid(row=1, column=0, columnspan=2, padx='5', pady='5', sticky='ew')
+		#self.master.update()
+		#time.sleep(1)
 		self.bausetllaLabel214 = Label(self.frameTop, text="Warten : 3", bg="red", fg="white", font=("Courier", 22)).grid(row=1, column=0, columnspan=2, padx='5', pady='5', sticky='ew')
 		self.master.update()
 		time.sleep(1)
@@ -137,6 +138,7 @@ class mainGui:
 		self.bausetllaLabel211 = Label(self.frameTop, text="Bereit", bg="green", fg="white", font=("Courier", 22)).grid(row=1, column=0, columnspan=2, padx='5', pady='5', sticky='ew')
 		self.master.update()
 		self.personAnzeigen(self.Max)
+		self.frameTopRight.config(bg='red')
 
 	def personAnzeigen(self, person):
 		self.bausetllaLabel222 = Label(self.frameTopRight, text=person.vorname+" "+person.nachname, bg="black", fg="white",font=("Courier", 12), width="30").grid(row=1, column=1, padx='5', pady='0',sticky='ew')
