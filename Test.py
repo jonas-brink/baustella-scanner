@@ -1,4 +1,4 @@
-import grafikinterface
+import grafikinterface_new
 import threading
 import person
 from tkinter import *
@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     main = Tk()
 
-    mainGUI = grafikinterface.mainGui(main, 2)
+    mainGUI = grafikinterface_new.mainGui(main, 2)
     mainGUI.anzahlPersonenErhöhen()
     mainGUI.personGescannt(Jan)
 
