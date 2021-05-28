@@ -1,12 +1,16 @@
 from tkinter import *
+from person import Person
+import time
 #Mode 2 aktiviert 2. Fenster.
 
 class mainGui:
 	def __init__(self, master, mode):
+		self.Max = Person("Max", "Mustermann", "00.00.2000", "123456789", "Alleee", "120", "32584", "Löhne")
 		self.pace = 1.0
 		self.height = 1
 		self.master = master
 		self.counter = 0
+
 
 		if mode==1:
 			master.geometry("520x375+600+300")
@@ -69,7 +73,6 @@ class mainGui:
 			self.bausetllaLabel212 = Label(self.frameTop, text="Anwesend:", bg="blue", fg="white", font=("Courier", 16)).grid(row=2, column=0, padx='5', pady='5', sticky='ew')
 			self.bausetllaLabel213 = Label(self.frameTop, text=str(self.counter), bg="blue", fg="white", font=("Courier", 16)).grid(row=2, column=1, padx='5', pady='5', sticky='ew')
 
-
 			self.bausetllaLabel22 = Label(self.frameTopRight, text="Aktuell Erkannt:", bg="black", fg="white",font=("Courier", 16), width="45").grid(row=0, column=0, columnspan = 2, padx='5', pady='5', sticky='ew')
 			self.bausetllaLabel221 = Label(self.frameTopRight, text="Name:", bg="black", fg="white", font=("Courier", 12), width="15").grid(row=1, column=0, padx='5', pady='0', sticky='ew')
 			self.bausetllaLabel222 = Label(self.frameTopRight, text="Max Mustermann", bg="black", fg="white", font=("Courier", 12), width="30").grid(row=1, column=1, padx='5', pady='0', sticky='ew')
@@ -87,7 +90,6 @@ class mainGui:
 			self.bausetllaLabel23 = Label(self.frameBot, text="Anwesende Personen", bg="black", fg="green").grid(row=0, column=0, padx='5', pady='5', sticky='ew')
 
 			self.bausetllaLabel24 = Label(self.frameBotRight, text="Abwesende Personen", bg="black", fg="red").grid(row=0, column=0, padx='5', pady='5', sticky='ew')
-
 
 
 
@@ -111,10 +113,38 @@ class mainGui:
 		self.counter = self.counter -1
 		self.bausetllaLabel213 = Label(self.frameTop, text=str(self.counter), bg="blue", fg="white", font=("Courier", 16)).grid(row=2, column=1, padx='5', pady='5', sticky='ew')
 
-	#def personGescannt(self):
+	def personGescannt(self, person):
+		self.master.update()
+		time.sleep(3)
+
+		self.personAnzeigen(person)
+		self.anzahlPersonenErhöhen()
+		self.bausetllaLabel211 = Label(self.frameTop, text="Warten : 5", bg="red", fg="white", font=("Courier", 22)).grid(row=1, column=0, columnspan=2, padx='5', pady='5', sticky='ew')
+		self.master.update()
+		time.sleep(1)
+		self.bausetllaLabel214 = Label(self.frameTop, text="Warten : 4", bg="red", fg="white", font=("Courier", 22)).grid(row=1, column=0, columnspan=2, padx='5', pady='5', sticky='ew')
+		self.master.update()
+		time.sleep(1)
+		self.bausetllaLabel214 = Label(self.frameTop, text="Warten : 3", bg="red", fg="white", font=("Courier", 22)).grid(row=1, column=0, columnspan=2, padx='5', pady='5', sticky='ew')
+		self.master.update()
+		time.sleep(1)
+		self.bausetllaLabel214 = Label(self.frameTop, text="Warten : 2", bg="red", fg="white", font=("Courier", 22)).grid(row=1, column=0, columnspan=2, padx='5', pady='5', sticky='ew')
+		self.master.update()
+		time.sleep(1)
+		self.bausetllaLabel214 = Label(self.frameTop, text="Warten : 1", bg="red", fg="white", font=("Courier", 22)).grid(row=1, column=0, columnspan=2, padx='5', pady='5', sticky='ew')
+		self.master.update()
+		time.sleep(1)
+		self.bausetllaLabel211 = Label(self.frameTop, text="Bereit", bg="green", fg="white", font=("Courier", 22)).grid(row=1, column=0, columnspan=2, padx='5', pady='5', sticky='ew')
+		self.master.update()
+		self.personAnzeigen(self.Max)
 
 	def personAnzeigen(self, person):
-		self.bausetllaLabel222 = Label(self.frameTopRight, text=person.vorname+person.nachname, bg="black", fg="white",font=("Courier", 12), width="30").grid(row=1, column=1, padx='5', pady='0',sticky='ew')
+		self.bausetllaLabel222 = Label(self.frameTopRight, text=person.vorname+" "+person.nachname, bg="black", fg="white",font=("Courier", 12), width="30").grid(row=1, column=1, padx='5', pady='0',sticky='ew')
+		self.bausetllaLabel224 = Label(self.frameTopRight, text=person.gebdatum, bg="black", fg="white", font=("Courier", 12), width="30").grid(row=2, column=1, padx='5', pady='0', sticky='ew')
+		self.bausetllaLabel226 = Label(self.frameTopRight, text=person.telefonnr, bg="black", fg="white", font=("Courier", 12), width="30").grid(row=3, column=1, padx='5', pady='0', sticky='ew')
+		self.bausetllaLabel228 = Label(self.frameTopRight, text=person.strasse+" "+person.hausnr, bg="black", fg="white", font=("Courier", 12), width="30").grid(row=4, column=1, padx='5', pady='0', sticky='ew')
+		self.bausetllaLabel2210 = Label(self.frameTopRight, text=person.plz+" "+person.ort, bg="black", fg="white", font=("Courier", 12), width="30").grid(row=5, column=1, padx='5', pady='0', sticky='ew')
+		self.bausetllaLabel2212 = Label(self.frameTopRight, text="00:00 Uhr", bg="black", fg="white", font=("Courier", 12), width="30").grid(row=5, column=1, padx='5', pady='0', sticky='ew')
 
 
 	#def write2(self, txt):
@@ -123,3 +153,6 @@ class mainGui:
 	#	else:
 	#		self.output2.insert(END, str(txt + "\n"))
 	#		self.output2.see("end")
+
+
+
