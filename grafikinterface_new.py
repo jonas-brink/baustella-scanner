@@ -11,7 +11,6 @@ class mainGui:
 		self.master = master
 		self.counter = 0
 
-
 		if mode==1:
 			master.geometry("520x375+600+300")
 		elif mode==2:
@@ -141,11 +140,11 @@ class mainGui:
 		self.frameTopRight.config(bg='red')
 
 	def personAnzeigen(self, person):
-		self.bausetllaLabel222 = Label(self.frameTopRight, text=person.vorname+" "+person.nachname, bg="black", fg="white",font=("Courier", 12), width="30").grid(row=1, column=1, padx='5', pady='0',sticky='ew')
-		self.bausetllaLabel224 = Label(self.frameTopRight, text=person.gebdatum, bg="black", fg="white", font=("Courier", 12), width="30").grid(row=2, column=1, padx='5', pady='0', sticky='ew')
-		self.bausetllaLabel226 = Label(self.frameTopRight, text=person.telefonnr, bg="black", fg="white", font=("Courier", 12), width="30").grid(row=3, column=1, padx='5', pady='0', sticky='ew')
-		self.bausetllaLabel228 = Label(self.frameTopRight, text=person.strasse+" "+person.hausnr, bg="black", fg="white", font=("Courier", 12), width="30").grid(row=4, column=1, padx='5', pady='0', sticky='ew')
-		self.bausetllaLabel2210 = Label(self.frameTopRight, text=person.plz+" "+person.ort, bg="black", fg="white", font=("Courier", 12), width="30").grid(row=5, column=1, padx='5', pady='0', sticky='ew')
+		self.bausetllaLabel222 = Label(self.frameTopRight, text=person.vorname.replace('\\', '')+" "+person.nachname.replace('\\', ''), bg="black", fg="white",font=("Courier", 12), width="30").grid(row=1, column=1, padx='5', pady='0',sticky='ew')
+		self.bausetllaLabel224 = Label(self.frameTopRight, text=person.gebdatum.replace('\\', ''), bg="black", fg="white", font=("Courier", 12), width="30").grid(row=2, column=1, padx='5', pady='0', sticky='ew')
+		self.bausetllaLabel226 = Label(self.frameTopRight, text=person.telefonnr.replace('\\', ''), bg="black", fg="white", font=("Courier", 12), width="30").grid(row=3, column=1, padx='5', pady='0', sticky='ew')
+		self.bausetllaLabel228 = Label(self.frameTopRight, text=person.strasse.replace('\\', '')+" "+person.hausnr.replace('\\', ''), bg="black", fg="white", font=("Courier", 12), width="30").grid(row=4, column=1, padx='5', pady='0', sticky='ew')
+		self.bausetllaLabel2210 = Label(self.frameTopRight, text=person.plz.replace('\\', '')+" "+person.ort.replace('\\', ''), bg="black", fg="white", font=("Courier", 12), width="30").grid(row=5, column=1, padx='5', pady='0', sticky='ew')
 		self.bausetllaLabel2212 = Label(self.frameTopRight, text="00:00 Uhr", bg="black", fg="white", font=("Courier", 12), width="30").grid(row=5, column=1, padx='5', pady='0', sticky='ew')
 
 
