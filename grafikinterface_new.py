@@ -14,20 +14,20 @@ class mainGui:
 		if mode==1:
 			master.geometry("520x375+600+300")
 		elif mode==2:
-			master.geometry("1140x700+600+300")
+			master.geometry("1280x1024")
 
-		master.config(bg="white")
+		master.config(bg="gray")
 		master.title("Main Interface")
 		master.resizable(True, True)
 
 		#building frame grid
-		self.frameTop = Frame(master, padx=50, pady=70, bg='orange')
+		self.frameTop = Frame(master, padx=90, pady=70, bg='orange')
 		self.frameTop.grid(row=0, column=0)
-		self.frameTopRight = Frame(master, padx=50, pady=70, bg='red')
+		self.frameTopRight = Frame(master, padx=90, pady=70, bg='red')
 		self.frameTopRight.grid(row=0, column=1)
-		self.frameBot = Frame(master, padx=50, pady=50, bg='gray')
+		self.frameBot = Frame(master, padx=90, pady=50, bg='gray')
 		self.frameBot.grid(row=1, column=0)
-		self.frameBotRight = Frame(master, padx=50, pady=50, bg='gray')
+		self.frameBotRight = Frame(master, padx=90, pady=50, bg='gray')
 		self.frameBotRight.grid(row=1, column=1)
 
 		# frame for terminal
@@ -51,14 +51,14 @@ class mainGui:
 			self.scrollbar2.pack(side=RIGHT, fill="y")
 
 		# create output
-		self.output = Listbox(self.frameTerminal, yscrollcommand=self.scrollbar.set, width=50, height=15,
+		self.output = Listbox(self.frameTerminal, yscrollcommand=self.scrollbar.set, width=50, height=30,
                               background='black', fg='white')
 		self.output.pack(side=LEFT)
 		self.scrollbar.config(command=self.output.yview)
 
 		# create output2
 		if mode==2:
-			self.output2 = Listbox(self.frameTerminal2, yscrollcommand=self.scrollbar2.set, width=50, height=15,
+			self.output2 = Listbox(self.frameTerminal2, yscrollcommand=self.scrollbar2.set, width=50, height=30,
                 	               background='black', fg='white')
 			self.output2.pack(side=LEFT)
 			self.scrollbar2.config(command=self.output2.yview)
