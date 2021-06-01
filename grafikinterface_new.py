@@ -6,8 +6,6 @@ import time
 class mainGui:
 	def __init__(self, master, mode):
 		self.Max = Person("Max", "Mustermann", "00.00.2000", "123456789", "Alleee", "120", "32584", "Löhne")
-		self.pace = 1.0
-		self.height = 1
 		self.master = master
 		self.counter = 0
 
