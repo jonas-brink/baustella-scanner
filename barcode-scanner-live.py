@@ -7,7 +7,7 @@ import time
 import pickle
 import threading
 from tkinter import *
-import grafikinterface
+import grafikinterface_new
 import re
 from person import Person
 # get access to LEDs connected to RPi
@@ -98,13 +98,14 @@ def scan(gui, dateFile, pin):
                     time.sleep(2.0)
                     break
                 persons.append(new_person)
-                gui.write(persons)
                 led.on()
-                print('Wait...')
+                gui.anzahlPersonenErhöhen()
+                gui.personGescannt(new_person)
+                gui.write(persons)
                 # serialize persons list (open file in write-binary-mode)
                 pickle.dump(persons, open(dateFile, 'wb'))
                 print(persons)
-                time.sleep(2.0)
+                #time.sleep(2.0)
                 led.off()
                 print('Scan:')
             except IndexError:
@@ -140,7 +141,7 @@ if __name__ == "__main__":
             # create gui
             global gui
             main = Tk()
-            mainGUI = grafikinterface.mainGui(main)
+            mainGUI = grafikinterface_new.mainGui(main, 2)
             # start scanner thread
             try:
                 scanThread = threading.Thread(

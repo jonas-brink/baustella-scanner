@@ -122,9 +122,6 @@ class mainGui:
 		self.bausetllaLabel213 = Label(self.frameTop, text=str(self.counter), bg="blue", fg="white", font=("Courier", 16)).grid(row=2, column=1, padx='5', pady='5', sticky='ew')
 
 	def personGescannt(self, person):
-		self.master.update()
-		#time.sleep(3)
-
 		self.frameTopRight.config(bg='green')
 		self.personAnzeigen(person)
 		self.anzahlPersonenErhöhen()
