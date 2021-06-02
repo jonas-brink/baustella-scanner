@@ -63,7 +63,11 @@ class mainGui:
 
 		# frame for terminal
 		self.frameTerminal = Frame(self.frameBot)
-		self.frameTerminal.grid(row=1,sticky=E+W+N+S)
+		self.frameTerminal.rowconfigure(0, weight=1)
+		self.frameTerminal.rowconfigure(1, weight=1)
+		self.frameTerminal.columnconfigure(0, weight=1)
+		self.frameTerminal.columnconfigure(0, weight=1)
+		self.frameTerminal.grid(row=1, sticky=E+W+N+S)
 		self.frameTerminal.configure(background='black')
 
 		# frame for terminal2
@@ -74,7 +78,7 @@ class mainGui:
 
 		# create scrollbar
 		self.scrollbar = Scrollbar(self.frameTerminal)
-		self.scrollbar.pack(side=RIGHT, fill="y")
+		self.scrollbar.grid(column=1, row=0, sticky='NS')
 
 		# create scrollbar2
 		#if mode==2:
@@ -84,7 +88,7 @@ class mainGui:
 		# create output
 		self.output = Listbox(self.frameTerminal, yscrollcommand=self.scrollbar.set, width=50, height=30,
                               background='black', fg='white')
-		self.output.pack(side=LEFT)
+		self.output.grid(row=0, column=0, sticky=E+W+N+S)
 		self.scrollbar.config(command=self.output.yview)
 
 		# create output2
