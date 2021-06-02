@@ -32,11 +32,12 @@ class mainGui:
 		self.frameBotRight = Frame(master, padx=30, pady=10, bg='gray')
 		#self.frameBotRight.grid(row=1, column=1, sticky=E+W+N+S)
 
-		#self.frameTop.rowconfigure(0, weight=1)
+		self.frameTop.rowconfigure(0, weight=1)
+		self.frameTop.rowconfigure(1, weight=1)
+		self.frameTop.rowconfigure(2, weight=1)
 		self.frameTop.columnconfigure(0, weight=1)
 		self.frameTop.columnconfigure(1, weight=1)
-		self.frameTop.columnconfigure(2, weight=1)
-		self.frameTop.columnconfigure(3, weight=1)
+
 
 		self.frameTopRight.rowconfigure(0, weight=1)
 		self.frameTopRight.rowconfigure(1, weight=1)
@@ -64,11 +65,9 @@ class mainGui:
 		# frame for terminal
 		self.frameTerminal = Frame(self.frameBot)
 		self.frameTerminal.rowconfigure(0, weight=1)
-		self.frameTerminal.rowconfigure(1, weight=1)
 		self.frameTerminal.columnconfigure(0, weight=1)
-		self.frameTerminal.columnconfigure(0, weight=1)
-		self.frameTerminal.grid(row=1, sticky=E+W+N+S)
-		self.frameTerminal.configure(background='black')
+		self.frameTerminal.grid(row=1, column=0, sticky=E+W+N+S)
+		self.frameTerminal.configure(background='blue')
 
 		# frame for terminal2
 		#if mode==2:
@@ -86,9 +85,8 @@ class mainGui:
 		#	self.scrollbar2.pack(side=RIGHT, fill="y")
 
 		# create output
-		self.output = Listbox(self.frameTerminal, yscrollcommand=self.scrollbar.set, width=50, height=30,
-                              background='black', fg='white')
-		self.output.grid(row=0, column=0, sticky=E+W+N+S)
+		self.output = Listbox(self.frameTerminal, yscrollcommand=self.scrollbar.set, width=50, height=30, background='black', fg='white')
+		self.output.grid(row=0, column=0, sticky='NSEW')
 		self.scrollbar.config(command=self.output.yview)
 
 		# create output2
