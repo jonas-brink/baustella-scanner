@@ -17,16 +17,27 @@ class mainGui:
 		master.config(bg="gray")
 		master.title("Main Interface")
 		master.resizable(True, True)
+		master.columnconfigure(0, weight=1)
+		master.rowconfigure(1, weight=1)
 
 		#building frame grid
 		self.frameTop = Frame(master, padx=90, pady=70, bg='orange')
-		self.frameTop.grid(row=0, column=0)
+		self.frameTop.grid(row=0, column=0, sticky=E+W+N+S)
 		self.frameTopRight = Frame(master, padx=90, pady=70, bg='red')
-		self.frameTopRight.grid(row=0, column=1)
+		self.frameTopRight.grid(row=0, column=1, sticky=E+W+N+S)
 		self.frameBot = Frame(master, padx=90, pady=50, bg='gray')
-		self.frameBot.grid(row=1, column=0)
+		self.frameBot.grid(row=1, column=0, sticky=E+W+N+S)
 		self.frameBotRight = Frame(master, padx=90, pady=50, bg='gray')
-		self.frameBotRight.grid(row=1, column=1)
+		self.frameBotRight.grid(row=1, column=1, sticky=E+W+N+S)
+
+		self.frameTop.rowconfigure(0, weight=1)
+		self.frameTop.columnconfigure(0, weight=1)
+		self.frameTopRight.rowconfigure(0, weight=1)
+		self.frameTopRight.columnconfigure(0, weight=1)
+		self.frameBot.rowconfigure(0, weight=1)
+		self.frameBot.columnconfigure(0, weight=1)
+		self.frameBotRight.rowconfigure(0, weight=1)
+		self.frameBotRight.columnconfigure(0, weight=1)
 
 		# frame for terminal
 		self.frameTerminal = Frame(self.frameBot)
