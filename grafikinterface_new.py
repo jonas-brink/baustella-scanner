@@ -88,6 +88,7 @@ class mainGui:
 		self.output = Listbox(self.frameTerminal, yscrollcommand=self.scrollbar.set, width=50, height=30, background='black', fg='white')
 		self.output.grid(row=0, column=0, sticky='NSEW')
 		self.scrollbar.config(command=self.output.yview)
+		self.output.focus_set()
 
 		# create output2
 		#if mode==2:
