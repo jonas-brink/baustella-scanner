@@ -32,14 +32,18 @@ rowsPins = [7, 8, 11, 25]
 colsPins = [9, 10, 15, 18]
 
 
+# read digit input from keypad
 def inputDigit(kp):
     digit = None
+    # wait for keypress on keypad
     while digit == None or digit == kp.NULL:
         digit = kp.getKey()
     return str(digit)
 
 
+# returns given date input as string
 def dateInput(kp, startGui, start):
+    # show label for date input
     startGui.datumEingeben()
     start.update()
     print("Bitte das Datum eingeben (TT*MM*JJJJ): ")
@@ -61,6 +65,7 @@ def dateInput(kp, startGui, start):
     return day1 + day2 + dot1 + month1 + month2 + dot2 + year1 + year2 + year3 + year4
 
 
+# start scanning for QR codes in camera range
 def scan(gui, dateFile, pin):
     # get persons list from files
     try:
